@@ -78,3 +78,51 @@ document
     message.remove();
     // message.parentElement.removeChild(message); // старый способ удаления елементов
   });
+
+// Стили
+
+message.style.backgroundColor = '#076785'; // стиль добавлен к элементу DOM таким способом (програмно) называеться inline и соответственно его можно также считывать.
+message.style.width = '120%';
+console.log(message.style.width);
+console.log(message.style.backgroundColor);
+console.log(getComputedStyle(message));
+console.log(getComputedStyle(message).color); // способ считывания стиля который не являеться inline
+console.log(getComputedStyle(message).height);
+message.style.height =
+  Number.parseFloat(getComputedStyle(message).height) + 50 + 'px';
+console.log(message.style.height); // считывание inline стиля
+
+document.documentElement.style.setProperty('--color-first', 'yellow'); // изменение значения стиля установленного в root
+
+// Атрибуты
+
+const logo = document.querySelector('.nav__logo');
+console.log(logo.alt);
+console.log(logo.src); // http://127.0.0.1:8080/img/logo.png - абсолютный путь к logo
+console.log(logo.getAttribute('src')); // img/logo.png - относительный путь (относительно index.html)
+console.log(logo.className);
+
+logo.alt = 'Лого прекрасного банка';
+
+// Нестандартный атрибут
+console.log(logo.developer); // undefined
+console.log(logo.getAttribute('developer'));
+logo.setAttribute('copyright', 'Masters Of Code');
+
+const link = document.querySelector('.nav__link--btn');
+console.log(link.href);
+console.log(link.getAttribute('href'));
+
+// Data attributes
+
+console.log(logo.dataset.versionNumber); // способ считать значения атрибута типа data
+
+// Classes
+
+logo.classList.add('a', 'b');
+logo.classList.remove('a', 'b');
+logo.classList.toggle('a');
+logo.classList.contains('c');
+
+// Не использовать:
+// logo.className = 'a'; // будут удалены все предыдущие классы и установиться только текущий
