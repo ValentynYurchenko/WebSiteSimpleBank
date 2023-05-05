@@ -38,6 +38,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 ////////////////////////////////////////////////////////////
+/*
 // Выбор элементов
 console.log(document.documentElement);
 console.log(document.head);
@@ -92,7 +93,7 @@ message.style.height =
   Number.parseFloat(getComputedStyle(message).height) + 50 + 'px';
 console.log(message.style.height); // считывание inline стиля
 
-document.documentElement.style.setProperty('--color-first', 'yellow'); // изменение значения стиля установленного в root
+document.documentElement.style.setProperty('--color-first', 'yellow'); // установка значения свойства стиля в обьекте root (css переменных)
 
 // Атрибуты
 
@@ -115,7 +116,7 @@ console.log(link.getAttribute('href'));
 
 // Data attributes
 
-console.log(logo.dataset.versionNumber); // способ считать значения атрибута типа data
+console.log(logo.dataset.versionNumber); // способ считать значения атрибута типа data (название атрибута data всегда начинаеться с data-). Используеться для сохранения данных в UI.
 
 // Classes
 
@@ -125,4 +126,41 @@ logo.classList.toggle('a');
 logo.classList.contains('c');
 
 // Не использовать:
-// logo.className = 'a'; // будут удалены все предыдущие классы и установиться только текущий
+// logo.className = 'a'; // будут удалены все предыдущие классы и установиться только текущий */
+
+// Implementation of smooth scrolling
+
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+btnScrollTo.addEventListener('click', function (e) {
+  // old approach:
+  // const sectionCoords = section1.getBoundingClientRect();
+
+  // console.log(sectionCoords);
+  // console.log(e.target.getBoundingClientRect());
+  // console.log(
+  //   'Текущее прокручивание: x, y',
+  //   window.pageXOffset,
+  //   window.pageYOffset
+  // );
+  // console.log(
+  //   'Ширина и высота viewport',
+  //   document.documentElement.clientWidth,
+  //   document.documentElement.clientHeight
+  // );
+
+  // window.scrollTo(
+  //   sectionCoords.left + window.pageXOffset,
+  //   sectionCoords.top + window.pageYOffset
+  // );
+
+  // window.scrollTo({
+  //   left: sectionCoords.left + window.pageXOffset,
+  //   top: sectionCoords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+
+  // new approach (but working only for the new browsers):
+  section1.scrollIntoView({ behavior: 'smooth' });
+});
