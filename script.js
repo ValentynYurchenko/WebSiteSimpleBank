@@ -1,14 +1,16 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modalWindow = document.querySelector('.modal-window');
 const overlay = document.querySelector('.overlay');
 const btnCloseModalWindow = document.querySelector('.btn--close-modal-window');
 const btnsOpenModalWindow = document.querySelectorAll(
   '.btn--show-modal-window'
 );
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.querySelector('#section--1');
+
+///////////////////////////////////////
+// Modal window
 
 const openModalWindow = function (e) {
   e.preventDefault();
@@ -37,6 +39,65 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+////////////////////////////////////////////////
+// Implementation of smooth scrolling
+
+btnScrollTo.addEventListener('click', function (e) {
+  // new approach (but working only for the new browsers):
+  section1.scrollIntoView({ behavior: 'smooth' });
+
+  // old approach:
+  // const sectionCoords = section1.getBoundingClientRect();
+
+  // console.log(sectionCoords);
+  // console.log(e.target.getBoundingClientRect());
+  // console.log(
+  //   'Текущее прокручивание (расстояние от viewport до начала страницы): x, y',
+  //   window.pageXOffset,
+  //   window.pageYOffset
+  // );
+  // console.log(
+  //   'Ширина и высота viewport (границы текущей области видимости)',
+  //   document.documentElement.clientWidth,
+  //   document.documentElement.clientHeight
+  // );
+
+  // window.scrollTo(
+  //   sectionCoords.left + window.pageXOffset,
+  //   sectionCoords.top + window.pageYOffset
+  // );
+
+  // window.scrollTo({
+  //   left: sectionCoords.left + window.pageXOffset,
+  //   top: sectionCoords.top + window.pageYOffset,
+  //   behavior: 'smooth',
+  // });
+});
+
+////////////////////////////////////////////////////////////// Smooth page navigation:
+// Первый способ рабочий, но не оптимальный, так как может влиять на производительность. Поэтому используем второй способ: event delegation.
+
+// document.querySelectorAll('.nav__link').forEach(function (htmlElement) {
+//   htmlElement.addEventListener('click', function (e) {
+//     e.preventDefault();
+//     const href = this.getAttribute('href');
+//     document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+//   });
+// });
+
+// Event delegation
+// 1. Add event listener to the total parent
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+  e.preventDefault();
+  // 2. Define the target element
+  console.log(e.target);
+  if (e.target.classList.contains('nav__link')) {
+    const href = e.target.getAttribute('href');
+    document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /*
 // Выбор элементов
@@ -128,43 +189,6 @@ logo.classList.contains('c');
 // Не использовать:
 // logo.className = 'a'; // будут удалены все предыдущие классы и установиться только текущий */
 
-// Implementation of smooth scrolling
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.querySelector('#section--1');
-
-btnScrollTo.addEventListener('click', function (e) {
-  // old approach:
-  // const sectionCoords = section1.getBoundingClientRect();
-
-  // console.log(sectionCoords);
-  // console.log(e.target.getBoundingClientRect());
-  // console.log(
-  //   'Текущее прокручивание (расстояние от viewport до начала страницы): x, y',
-  //   window.pageXOffset,
-  //   window.pageYOffset
-  // );
-  // console.log(
-  //   'Ширина и высота viewport (границы текущей области видимости)',
-  //   document.documentElement.clientWidth,
-  //   document.documentElement.clientHeight
-  // );
-
-  // window.scrollTo(
-  //   sectionCoords.left + window.pageXOffset,
-  //   sectionCoords.top + window.pageYOffset
-  // );
-
-  // window.scrollTo({
-  //   left: sectionCoords.left + window.pageXOffset,
-  //   top: sectionCoords.top + window.pageYOffset,
-  //   behavior: 'smooth',
-  // });
-
-  // new approach (but working only for the new browsers):
-  section1.scrollIntoView({ behavior: 'smooth' });
-});
-
 ////////////////////////////////////////////////////////////// Виды Событий И Обработчиков Событий
 /*
 const h1 = document.querySelector('h1');
@@ -191,7 +215,9 @@ setTimeout(() => h1.removeEventListener('mouseenter', alertMouseEnterH1), 5000);
 //   alert('onclick: You are now at the h1 element');
 // };
 */
-////////////////////////////////////////////////////////////// Event Propagation
+////////////////////////////////////////////////////////////
+/*
+// Event Propagation
 // rgb(123, 56, 78)
 
 function getRandomIntInclusive(min, max) {
@@ -233,4 +259,7 @@ document.querySelector('body').addEventListener('click', function (e) {
   this.style.backgroundColor = getRandomColor();
   console.log('Body', e.target, e.currentTarget);
   console.log(this === e.currentTarget);
-});
+}); */
+
+// e.target - это элемент для которого фактически произошло событие;
+// e.currentTarget - это элемент для которого сработал обработчик события.
