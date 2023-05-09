@@ -97,6 +97,29 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
+// Creating tab (создание вкладки)
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+
+tabContainer.addEventListener('click', function (e) {
+  const clickedButton = e.target.closest('.operations__tab');
+  // Guard clause - пункт охраны
+  if (!clickedButton) return;
+
+  // Active tab
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clickedButton.classList.add('operations__tab--active');
+
+  // Active content
+  tabContents.forEach(content =>
+    content.classList.remove('operations__content--active')
+  );
+  document
+    .querySelector(`.operations__content--${clickedButton.dataset.tab}`)
+    .classList.add('operations__content--active');
+});
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
 /*
@@ -263,3 +286,34 @@ document.querySelector('body').addEventListener('click', function (e) {
 
 // e.target - это элемент для которого фактически произошло событие;
 // e.currentTarget - это элемент для которого сработал обработчик события.
+
+////////////////////////////////////////////////////////////// DOM traversing (перемещение по DOM)
+/*
+
+const h1 = document.querySelector('h1');
+
+// Перемещение вниз (к потомкам)
+
+console.log(h1.querySelectorAll('.highlight'));
+console.log(h1.childNodes); // получаем нод лист состоящих из всех вложеный элементов (не очень полезный метод, так как содержит много излишней информации)
+console.log(h1.children); // получаем прямых потомков в формате HTML Collection
+console.log(h1.firstElementChild); // получаем первого потомка (первый дочерний элемент для h1)
+h1.firstElementChild.style.color = 'yellow'; // так же можно например програмно устанавливать стиль для первого потомка
+console.log(h1.lastElementChild); // последный потомок
+h1.lastElementChild.style.color = 'rgb(255, 88, 6)';
+
+// Перемещение вверх (к родителям)
+console.log(h1.parentNode); // получение прямых родителей
+console.log(h1.parentElement); // получение прямых родителей
+
+const h2 = document.querySelector('h2');
+console.log(h2);
+h2.closest('.section').style.backgroundColor = 'blue'; // данный метод выбирает ближайшего родителя с указанным классом для элемента h2
+h2.closest('h2').style.backgroundColor = 'green'; // в данном случае для h2 произошел выбор самого себя
+
+// Перемещение в стороны (на одном уровне) - в js мы можем выбирать только соседние элементы (тоесть те которые находяться рядом: либо предыдущий, либо следующий)
+
+console.log(h2.previousElementSibling); // получение предыдущего элемента одного уровня (если такого элемента нету, будет возвращено null)
+console.log(h2.nextElementSibling); // получение следующего элемента одного уровня
+
+console.log(h1.parentElement.children); // в этом случае мы получаем все одноуровнивые элементы для h1. Сначала для h1 мы переходим к его родительскому элементу, а потом получаем всех прямых потомков (вложености первого уровня) этого родителя в форме HTML Collection. */
