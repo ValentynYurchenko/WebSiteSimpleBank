@@ -8,6 +8,10 @@ const btnsOpenModalWindow = document.querySelectorAll(
 );
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.querySelector('#section--1');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabContainer = document.querySelector('.operations__tab-container');
+const tabContents = document.querySelectorAll('.operations__content');
+const nav = document.querySelector('.nav');
 
 ///////////////////////////////////////
 // Modal window
@@ -74,7 +78,7 @@ btnScrollTo.addEventListener('click', function (e) {
   // });
 });
 
-////////////////////////////////////////////////////////////// Smooth page navigation:
+////////////////////////////////////////////////////////////// Smooth page navigation (плавная навигация по страницам(ссылкам)):
 // Первый способ рабочий, но не оптимальный, так как может влиять на производительность. Поэтому используем второй способ: event delegation.
 
 // document.querySelectorAll('.nav__link').forEach(function (htmlElement) {
@@ -97,10 +101,8 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
   }
 });
 
-// Creating tab (создание вкладки)
-const tabs = document.querySelectorAll('.operations__tab');
-const tabContainer = document.querySelector('.operations__tab-container');
-const tabContents = document.querySelectorAll('.operations__content');
+////////////////////////////////////////////////////////////
+// Creating tab (создание вкладки (переключение содержимого вкладки))
 
 tabContainer.addEventListener('click', function (e) {
   const clickedButton = e.target.closest('.operations__tab');
@@ -118,6 +120,45 @@ tabContainer.addEventListener('click', function (e) {
   document
     .querySelector(`.operations__content--${clickedButton.dataset.tab}`)
     .classList.add('operations__content--active');
+});
+
+////////////////////////////////////////////////////////////// Fading animation on navigation bar (анимация потускнения на панели навигации)
+
+const navLinksHoverAnimation = function (e) {
+  if (e.target.classList.contains('nav__link')) {
+    const linkOver = e.target;
+    const siblingLinks = linkOver
+      .closest('.nav__links')
+      .querySelectorAll('.nav__link');
+    const logo = linkOver.closest('.nav').querySelector('img');
+    const logoText = linkOver.closest('.nav').querySelector('.nav__text');
+
+    siblingLinks.forEach(el => {
+      if (el !== linkOver) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+    logoText.style.opacity = this;
+  }
+};
+
+nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4));
+
+nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1));
+
+////////////////////////////////////////////////////////////// Sticky Navigation (закрепление панели навигации)
+
+// old approach (low produce)
+const section1Coords = section1.getBoundingClientRect();
+console.log(section1Coords);
+
+window.addEventListener('scroll', function (e) {
+  console.log(window.scrollY);
+
+  if (window.scrollY > section1Coords.top) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
