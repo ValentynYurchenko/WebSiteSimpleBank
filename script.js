@@ -146,20 +146,43 @@ nav.addEventListener('mouseover', navLinksHoverAnimation.bind(0.4));
 nav.addEventListener('mouseout', navLinksHoverAnimation.bind(1));
 
 ////////////////////////////////////////////////////////////// Sticky Navigation (закрепление панели навигации)
-
+/*
 // old approach (low produce)
 const section1Coords = section1.getBoundingClientRect();
-console.log(section1Coords);
+// console.log(section1Coords);
 
 window.addEventListener('scroll', function (e) {
-  console.log(window.scrollY);
+  // console.log(window.scrollY);
 
   if (window.scrollY > section1Coords.top) {
     nav.classList.add('sticky');
   } else {
     nav.classList.remove('sticky');
   }
+}); 
+*/
+
+// Sticky Navigation - Intersection Observer API
+
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+const getStickyNav = function (entries) {
+  const entry = entries[0];
+  console.log(entry);
+
+  if (!entry.isIntersecting) {
+    nav.classList.add('sticky');
+  } else {
+    nav.classList.remove('sticky');
+  }
+};
+
+const observer = new IntersectionObserver(getStickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
 });
+observer.observe(header);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
@@ -358,3 +381,21 @@ console.log(h2.previousElementSibling); // получение предыдуще
 console.log(h2.nextElementSibling); // получение следующего элемента одного уровня
 
 console.log(h1.parentElement.children); // в этом случае мы получаем все одноуровнивые элементы для h1. Сначала для h1 мы переходим к его родительскому элементу, а потом получаем всех прямых потомков (вложености первого уровня) этого родителя в форме HTML Collection. */
+
+////////////////////////////////////////////////////////////
+// Intersection Observer API позволяет веб-приложениям асинхронно следить за изменением пересечения элемента с его родителем или областью видимости документа viewport.
+// Intersection Observer API позволяет указать функцию, которая будет вызвана всякий раз для элемента (target) при пересечении его с областью видимости документа (по умолчанию) или заданным элементом (root). В основном, используется отслеживание пересечения элемента с областью видимости (необходимо указать null в качестве корневого элемента).
+
+// const observerCallback = function (entries, observer) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   });
+// };
+
+// const observerOptions = {
+//   root: null,
+//   threshold: [0, 0.2],
+// };
+
+// const observer = new IntersectionObserver(observerCallback, observerOptions);
+// observer.observe(section1);
