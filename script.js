@@ -191,7 +191,7 @@ const allSections = document.querySelectorAll('.section');
 
 const appearanceSection = function (entries, observer) {
   const entry = entries[0];
-  console.log(entry);
+  // console.log(entry);
   if (!entry.isIntersecting) return;
   entry.target.classList.remove('section--hidden');
   observer.unobserve(entry.target);
@@ -206,6 +206,32 @@ allSections.forEach(function (section) {
   sectionObserver.observe(section);
   section.classList.add('section--hidden');
 });
+
+////////////////////////////////////////////////////////////// Implementation lazy loading for images
+const lazyImages = document.querySelectorAll('img[data-src]');
+
+const loadImages = function (entries, observer) {
+  const entry = entries[0];
+  // console.log(entry);
+
+  if (!entry.isIntersecting) return;
+
+  // Меняем изображение на изображение с более высоким разрешением:
+  entry.target.src = entry.target.dataset.src;
+  // entry.target.classList.remove('lazy-img');
+
+  entry.target.addEventListener('load', function () {
+    entry.target.classList.remove('lazy-img');
+  });
+  observer.unobserve(entry.target);
+};
+
+const lazyImagesObserver = new IntersectionObserver(loadImages, {
+  root: null,
+  threshold: 0.7,
+  // rootMargin: '300px',
+});
+lazyImages.forEach(image => lazyImagesObserver.observe(image));
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////
